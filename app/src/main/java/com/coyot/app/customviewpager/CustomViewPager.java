@@ -9,16 +9,22 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 public class CustomViewPager implements View.OnTouchListener {
 
@@ -27,12 +33,46 @@ public class CustomViewPager implements View.OnTouchListener {
     private float startX;
     private float maxV;
 
-    private View _Parent;
+    private ViewGroup _Parent;
+    private int _itemLayoutID;
     private ArrayList _items;
+    private Context _context;
 
-   public CustomViewPager(View v){
+   public CustomViewPager(Context context,ViewGroup parent , int itemLayoutID, ArrayList items){
        mVelocityTracker=VelocityTracker.obtain();
-       v.setOnTouchListener(this);
+       _Parent=parent;
+       _itemLayoutID=itemLayoutID;
+       _items=items;
+       _context=context;
+
+
+
+      for (int i=0 ; i<items.size(); i++){
+           View temp=itemMaker(itemLayoutID,parent,i);
+           //parent.addView(temp);
+       }
+
+
+       Log.d("#####################",parent.getChildCount()+"");
+
+       parent.setOnTouchListener(this);
+
+   }
+
+   public View itemMaker(int itemLayoutID,ViewGroup parent,int position){
+
+       View v= LayoutInflater.from(_context).inflate(itemLayoutID,parent);
+
+       ImageView imgv=(ImageView) v.findViewById(R.id.imageView);
+       imgv.setImageResource(R.drawable.ic_launcher_foreground);
+
+       TextView tv=(TextView) v.findViewById(R.id.textView2);
+       tv.setText("test text "+position);
+
+        v.setId(10000+position);
+
+       return v;
+
    }
 
 
@@ -43,6 +83,8 @@ public class CustomViewPager implements View.OnTouchListener {
         if(event.getAction()==MotionEvent.ACTION_DOWN){
             startX=event.getX();
             mVelocityTracker.clear();
+
+
 
         }else if(event.getAction()==MotionEvent.ACTION_MOVE){
             mVelocityTracker.addMovement(event);

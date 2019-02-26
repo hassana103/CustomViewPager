@@ -49,7 +49,7 @@ public class CustomViewPager implements View.OnTouchListener {
 
       for (int i=0 ; i<items.size(); i++){
            View temp=itemMaker(itemLayoutID,parent,i);
-           //parent.addView(temp);
+           parent.addView(temp);
        }
 
 
@@ -61,7 +61,7 @@ public class CustomViewPager implements View.OnTouchListener {
 
    public View itemMaker(int itemLayoutID,ViewGroup parent,int position){
 
-       View v= LayoutInflater.from(_context).inflate(itemLayoutID,parent);
+       View v= LayoutInflater.from(_context).inflate(itemLayoutID,parent,false);
 
        ImageView imgv=(ImageView) v.findViewById(R.id.imageView);
        imgv.setImageResource(R.drawable.ic_launcher_foreground);
@@ -69,7 +69,7 @@ public class CustomViewPager implements View.OnTouchListener {
        TextView tv=(TextView) v.findViewById(R.id.textView2);
        tv.setText("test text "+position);
 
-        v.setId(10000+position);
+
 
        return v;
 
@@ -95,7 +95,7 @@ public class CustomViewPager implements View.OnTouchListener {
                 maxV=v;
             }
 
-            Log.d("v and maxv",">>>>>"+v+"   "+maxV);
+            Log.e("v and maxv",">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+v+"   "+maxV);
 
         }
 
